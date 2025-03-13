@@ -46,13 +46,13 @@ yarn dev
 Run the following command to bootstrap your next-app using this template:
 
 ```bash
-yarn create next-app [project-name] -e https://github.com/nelwincatalogo/next14-tailwind
+yarn create next-app [project-name] -e https://github.com/nelwincatalogo/next14-tailwind-wagmi
 ```
 
 OR
 
 ```bash
-npx create-next-app [project-name] -e https://github.com/nelwincatalogo/next14-tailwind
+npx create-next-app [project-name] -e https://github.com/nelwincatalogo/next14-tailwind-wagmi
 ```
 
 ## Summary
