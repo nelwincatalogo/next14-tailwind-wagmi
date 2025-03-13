@@ -1,4 +1,4 @@
-# Next14-Tailwind Starter Template
+# Next14-Tailwind-Wagmi Starter Template
 
 <p align="center">
   <img src="https://img.shields.io/badge/build-passing-brightgreen" alt="Build Status" />
@@ -8,6 +8,31 @@
 <p align="center">
   <img src="https://miro.medium.com/max/1200/1*Y6mWTVoATSq7NGBN49HX9w.jpeg" alt="twin, next, styled-components" width="500">
 </p>
+
+## Setup Instruction
+
+1. Install dependencies
+
+```bash
+yarn
+```
+
+2. Make sure to update the env files
+
+```bash
+# 0 = development
+# 1 = production
+NEXT_PUBLIC_ENV = 0
+# WalletConnect 2.0 requires a projectId which you can create quickly and easily for free over at [WalletConnect Cloud](https://cloud.reown.com/sign-in).
+NEXT_PUBLIC_REOWN_PROJECT_ID =
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY =
+```
+
+3. Run the development server
+
+```bash
+yarn dev
+```
 
 ## Table of Contents
 
