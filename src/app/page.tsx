@@ -1,11 +1,11 @@
 'use client';
 
-import Template from '@/components/sample/template';
+import { ConnectKitButton } from 'connectkit';
 
 export default function Home() {
   return (
-    <main className="font-sans">
-      <Template />
+    <main className="font-inter">
+      <ConnectKitButton />
     </main>
   );
 }

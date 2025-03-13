@@ -1,8 +1,8 @@
 'use client';
 
-export default function LoadingDots({ message = '', dots = '•' }) {
+export default function LoadingDots2({ message = '', dots = '•', ...props }) {
   return (
-    <div>
+    <div {...props}>
       {message}
       <span className="dot">{dots}</span>
       <span className="dot">{dots}</span>

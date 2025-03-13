@@ -3,11 +3,12 @@
 import { extend, hookstate, useHookstate } from '@hookstate/core';
 // import { localstored } from '@hookstate/localstored';
 import { devtools } from '@hookstate/devtools';
-import { localstored } from './plugins/localStored';
 import merge from 'lodash.merge';
+import { localstored } from './plugins/localStored';
+import { IVerify } from './types/persist.types';
 
 const initialState = {
-  test: false,
+  verify: null as IVerify,
 };
 
 export const globalStatePersist = hookstate(
