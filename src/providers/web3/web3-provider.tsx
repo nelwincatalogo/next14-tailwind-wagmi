@@ -1,12 +1,17 @@
 'use client';
 
+import '@rainbow-me/rainbowkit/styles.css';
+
 import { StateProvider } from '@/providers/app/state';
 import { QueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { WagmiProvider, createConfig } from 'wagmi';
-import { bsc, polygon } from 'wagmi/chains';
+import { Config, WagmiProvider, createConfig, http } from 'wagmi';
+import { bsc, polygon, ronin, saigon } from 'wagmi/chains';
 import ReactQueryProvider from '../lib/react-query';
-import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
+import { connectorsForWallets, darkTheme, RainbowKitProvider, Theme } from '@rainbow-me/rainbowkit';
+import { roninWallet, walletConnectWallet } from '@rainbow-me/rainbowkit/wallets';
+import { roninWaypointWallet } from './waypoint.wallet';
+import merge from 'lodash.merge';
 
 declare global {
   interface Window {
@@ -15,25 +20,69 @@ declare global {
   }
 }
 
-export const config = createConfig(
-  getDefaultConfig({
-    // Required App Info
-    appName: 'rxc-dapp-v1',
-    // Required API Keys
-    walletConnectProjectId: process.env.NEXT_PUBLIC_REOWN_PROJECT_ID,
-    // Your dApps chains
-    chains: [polygon, bsc],
-    ssr: false, // If your dApp uses server side rendering (SSR)
-    // Optional App Info
-    // appDescription: 'Your App Description',
-    // appUrl: 'https://family.co', // your app's url
-    // appIcon: 'https://family.co/logo.png', // your app's icon, no bigger than 1024x1024px (max. 1MB)
-  }),
+const chainId = Number(process.env.NEXT_PUBLIC_CHAINDID);
+
+const connectors = connectorsForWallets(
+  [
+    {
+      groupName: 'Mobile',
+      wallets: [walletConnectWallet],
+    },
+    {
+      groupName: 'Recommended',
+      wallets: [
+        roninWallet,
+        () =>
+          roninWaypointWallet({
+            clientId: String(process.env.NEXT_PUBLIC_WAYPOINT_CLIENTID),
+            chainId,
+            projectId: String(process.env.NEXT_PUBLIC_REOWN_PROJECT_ID),
+          }),
+      ],
+    },
+  ],
+  {
+    appName: 'Sabong Saga',
+    projectId: String(process.env.NEXT_PUBLIC_REOWN_PROJECT_ID),
+  },
 );
+
+export const config: Config = createConfig({
+  connectors,
+  ssr: false,
+  chains: [chainId === 2020 ? ronin : saigon],
+  transports: {
+    [ronin.id]: http(),
+    [saigon.id]: http(),
+  },
+});
 
 export const queryClient = new QueryClient();
 
-export default function Web3Provider({ children }) {
+const myTheme = merge(
+  darkTheme({
+    accentColor: '#F5B924',
+    borderRadius: 'medium',
+    overlayBlur: 'small',
+    accentColorForeground: '#2D292E',
+  }),
+  {
+    radii: {
+      connectButton: '8px',
+      modal: '0.5rem',
+    },
+    colors: {
+      modalBackground: '#2D292E',
+      modalBorder: '#433746',
+    },
+  } as Theme,
+);
+
+interface IWeb3ProviderProps {
+  children: React.ReactNode;
+}
+
+export default function Web3Provider({ children }: IWeb3ProviderProps) {
   const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
 
   useEffect(() => {
@@ -55,7 +104,7 @@ export default function Web3Provider({ children }) {
     <WagmiProvider config={config}>
       <ReactQueryProvider>
         <StateProvider>
-          <ConnectKitProvider>{children}</ConnectKitProvider>
+          <RainbowKitProvider theme={myTheme}>{children}</RainbowKitProvider>
         </StateProvider>
       </ReactQueryProvider>
     </WagmiProvider>
